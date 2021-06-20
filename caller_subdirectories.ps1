@@ -14,20 +14,20 @@ foreach ($a in $args) {
     $directorySizes = Get-ChildItem -LiteralPath $a -Recurse -Directory | Measure-Directory
 
     foreach ($ds in $directorySizes) {
-        [long]$totalLength = 0
+        [long]$lengthTotal = 0
         $subDirectoriesAndItself = @($directorySizes | Where-Object {$_.FullName -match "$([regex]::Escape($ds.FullName))(\\.+)?"})
 
         if ($subDirectoriesAndItself.Length -gt 0) {
-            $totalLength = ($subDirectoriesAndItself | Measure-Object -Property Length -Sum).Sum
+            $lengthTotal = ($subDirectoriesAndItself | Measure-Object -Property Length -Sum).Sum
         }
 
         $ds | Select-Object `
-            @{label="Length"; expression ={$_.Length}},
-            @{label="LengthMB"; expression ={$_.LengthMB}},
-            @{label="LengthGB"; expression ={$_.LengthGB}},
-            @{label="LengthTotal"; expression ={$totalLength}},
-            @{label="DirectoryCount"; expression ={$subDirectoriesAndItself.Length}},
-            @{label="FullName"; expression ={$_.FullName}} | 
+            @{label="Length"; expression={$_.Length}},
+            @{label="LengthMB"; expression={$_.LengthMB}},
+            @{label="LengthGB"; expression={$_.LengthGB}},
+            @{label="LengthTotal"; expression={$lengthTotal}},
+            @{label="DirectoryCount"; expression={$subDirectoriesAndItself.Length}},
+            @{label="FullName"; expression={$_.FullName}} | 
             Export-Csv -Path $csvPath -Encoding utf8 -Append -NoTypeInformation
         
         $n++
