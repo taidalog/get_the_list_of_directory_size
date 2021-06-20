@@ -8,7 +8,7 @@ $datetimeFormat = "yyyy-MM-dd_HH-mm-ss"
 $csvExtension = ".csv"
 $csvPath = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "$($csvFilePrefix)$((Get-Date).ToString($datetimeFormat))$($csvExtension)"
 
-[int]$n = 0
+[long]$n = 0
 
 foreach ($a in $args) {
     $directorySizes = Get-ChildItem -LiteralPath $a -Recurse -Directory | Measure-Directory
